@@ -5,7 +5,7 @@ NOKIA_INPUT_FILE="n_file.txt"
 SAMSUNG_INPUT_FILE="s_file.txt"
 NOKIA_OUTPUT_FILE="n_OSS_IDs.txt"
 SAMSUNG_OUTPUT_FILE="s_OSS_IDs.txt"
-SQL_FILE="load_son_db.sql"
+SQL_FILE="load_oss_info.sql"
 
 get_data() {
   NFS_SERVER=172.21.188.152
@@ -63,9 +63,7 @@ CREATE TABLE IF NOT EXISTS \`oss_info\` (
 --
 -- Dumping data for table \`oss_info\`
 --
-INSERT INTO \`oss_info\` (\`id\`, \`description\`, \`localId\`, \`name\`, \`vendor\`) VALUES
-
-" > ${SQL_FILE}
+INSERT INTO \`oss_info\` (\`id\`, \`description\`, \`localId\`, \`name\`, \`vendor\`) VALUES" > ${SQL_FILE}
 
 }
 
