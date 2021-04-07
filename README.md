@@ -17,5 +17,5 @@ OSS Ids should be taken from the following folder on Westlake Lab NFS server (17
 For this to work you need to
 1. Connect to Customer VPN
 1. Add your SSH key to the NFS server (172.21.188.152)
-
-bash dev-672.sh
+1. run bash dev-672.sh
+1. edit load_oss_info.sql and change the last comma (,) to a semicolon (;)
