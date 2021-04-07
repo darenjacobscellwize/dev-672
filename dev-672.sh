@@ -3,6 +3,8 @@ set -euxo pipefail
 
 NOKIA_INPUT_FILE="n_file.txt"
 SAMSUNG_INPUT_FILE="s_file.txt"
+NOKIA_OUTPUT_FILE="n_OSS_IDs.txt"
+SAMSUNG_OUTPUT_FILE="s_OSS_IDs.txt"
 
 get_data() {
   NFS_SERVER=172.21.188.152
@@ -24,14 +26,69 @@ process_files() {
   do
     FILE_TO_READ=${file}
     if [ $file = ${NOKIA_INPUT_FILE} ]; then
-      read_file >> n_OSS_IDs.txt
+      read_file >> ${NOKIA_OUTPUT_FILE}
     elif [ $file = ${SAMSUNG_INPUT_FILE} ]; then
-      read_file >> s_OSS_IDs.txt
+      read_file >> ${SAMSUNG_OUTPUT_FILE}
     else
       echo "ERROR unknown file"
     fi
   done
 }
 
+create_sql_file(){
+echo "--
+-- Database: \`son\`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table \`oss_info\`
+--
+
+CREATE TABLE IF NOT EXISTS \`oss_info\` (
+  \`id\` bigint(20) NOT NULL AUTO_INCREMENT,
+  \`created\` datetime DEFAULT NULL,
+  \`deleted\` datetime DEFAULT NULL,
+  \`description\` varchar(255) DEFAULT NULL,
+  \`localId\` varchar(255) DEFAULT NULL,
+  \`name\` varchar(255) DEFAULT NULL,
+  \`vendor\` varchar(255) DEFAULT NULL,
+  \`params\` varchar(255) DEFAULT \'operator=unknown\',
+  \`isProvSuspended\` tinyint(10) DEFAULT b\'0\',
+  PRIMARY KEY (\`id\`)
+)
+
+--
+-- Dumping data for table \`oss_info\`
+--
+INSERT INTO \`oss_info\` (\`id\`, \`description\`, \`localId\`, \`name\`, \`vendor\`) VALUES
+
+" > load_son_db.sql
+
+}
+
+update_sql_file() {
+  id_number=9
+  for file in ${NOKIA_OUTPUT_FILE} ${SAMSUNG_OUTPUT_FILE}
+  do
+    while IFS= read -r line
+    do
+      echo "$line"
+      if [ $file = ${NOKIA_OUTPUT_FILE} ]; then
+        description="Samsung"
+        vendor="SAMSUNG_LTE"
+        echo "($id_number,\"${description} OSS $line\",\"$line\",\"$line\",\"$vendor\")" >> load_son_db.sql
+      elif [ $file = ${SAMSUNG_OUTPUT_FILE} ]; then
+        vendor="NOKIA"
+        echo "($id_number,\'${vendor} OSS $line\',\'$line\',\'$line\',\'$vendor\')" >> load_son_db.sql
+      fi
+      let "id_number=id_number+1"
+    done < "$file"
+  done
+}
+
 get_data
 process_files
+create_sql_file
+update_sql_file
