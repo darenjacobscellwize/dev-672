@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS \`oss_info\` (
 --
 -- Dumping data for table \`oss_info\`
 --
+
 INSERT INTO \`oss_info\` (\`id\`, \`description\`, \`localId\`, \`name\`, \`vendor\`) VALUES" > ${SQL_FILE}
 
 }

@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `oss_info` (
 --
 -- Dumping data for table `oss_info`
 --
+
 INSERT INTO `oss_info` (`id`, `description`, `localId`, `name`, `vendor`) VALUES
 (9,'Samsung OSS 5e56d9919c9092001d952240','5e56d9919c9092001d952240','5e56d9919c9092001d952240','SAMSUNG_LTE')
 (10,'Samsung OSS 5e56ed1c9c9092001d952241','5e56ed1c9c9092001d952241','5e56ed1c9c9092001d952241','SAMSUNG_LTE')
