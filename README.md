@@ -13,8 +13,9 @@ OSS Ids should be taken from the following folder on Westlake Lab NFS server (17
 /opt/spaces/raw_data/network/SAMSUNG
 ```
 
-# Assumptions / Requirements
+# NOTE / Requirements
+For this to work you need to
 1. Connect to Customer VPN
-1. Your ssh key is authorized on the NFS server
+1. Add your SSH key to the NFS server (172.21.188.152)
 
 bash dev-672.sh

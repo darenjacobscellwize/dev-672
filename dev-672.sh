@@ -5,6 +5,7 @@ NOKIA_INPUT_FILE="n_file.txt"
 SAMSUNG_INPUT_FILE="s_file.txt"
 NOKIA_OUTPUT_FILE="n_OSS_IDs.txt"
 SAMSUNG_OUTPUT_FILE="s_OSS_IDs.txt"
+SQL_FILE="load_son_db.sql"
 
 get_data() {
   NFS_SERVER=172.21.188.152
@@ -64,7 +65,7 @@ CREATE TABLE IF NOT EXISTS \`oss_info\` (
 --
 INSERT INTO \`oss_info\` (\`id\`, \`description\`, \`localId\`, \`name\`, \`vendor\`) VALUES
 
-" > load_son_db.sql
+" > ${SQL_FILE}
 
 }
 
@@ -78,17 +79,25 @@ update_sql_file() {
       if [ $file = ${NOKIA_OUTPUT_FILE} ]; then
         description="Samsung"
         vendor="SAMSUNG_LTE"
-        echo "($id_number,\"${description} OSS $line\",\"$line\",\"$line\",\"$vendor\")" >> load_son_db.sql
+        echo "($id_number,'${description} OSS $line','$line','$line','$vendor')" >> ${SQL_FILE}
       elif [ $file = ${SAMSUNG_OUTPUT_FILE} ]; then
         vendor="NOKIA"
-        echo "($id_number,\'${vendor} OSS $line\',\'$line\',\'$line\',\'$vendor\')" >> load_son_db.sql
+        echo "($id_number,'${vendor} OSS $line','$line','$line','$vendor')" >> ${SQL_FILE}
       fi
       let "id_number=id_number+1"
     done < "$file"
   done
 }
 
-get_data
-process_files
-create_sql_file
-update_sql_file
+execute_script() {
+  if [ -f "${SQL_FILE}" ]; then
+    rm ${SQL_FILE}
+  fi
+  get_data
+  process_files
+  create_sql_file
+  update_sql_file
+  rm  $NOKIA_INPUT_FILE $NOKIA_OUTPUT_FILE $SAMSUNG_INPUT_FILE $SAMSUNG_OUTPUT_FILE
+}
+
+execute_script
