@@ -76,12 +76,12 @@ update_sql_file() {
     do
       echo "$line"
       if [ $file = ${NOKIA_OUTPUT_FILE} ]; then
+        vendor="NOKIA"
+        echo "($id_number,'${vendor} OSS $line','$line','$line','$vendor')," >> ${SQL_FILE}
+      elif [ $file = ${SAMSUNG_OUTPUT_FILE} ]; then
         description="Samsung"
         vendor="SAMSUNG_LTE"
-        echo "($id_number,'${description} OSS $line','$line','$line','$vendor')" >> ${SQL_FILE}
-      elif [ $file = ${SAMSUNG_OUTPUT_FILE} ]; then
-        vendor="NOKIA"
-        echo "($id_number,'${vendor} OSS $line','$line','$line','$vendor')" >> ${SQL_FILE}
+        echo "($id_number,'${description} OSS $line','$line','$line','$vendor')," >> ${SQL_FILE}
       fi
       let "id_number=id_number+1"
     done < "$file"
