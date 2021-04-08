@@ -74,7 +74,6 @@ update_sql_file() {
   do
     while IFS= read -r line
     do
-      echo "$line"
       if [ $file = ${NOKIA_OUTPUT_FILE} ]; then
         vendor="NOKIA"
         echo "($id_number,'${vendor} OSS $line','$line','$line','$vendor')," >> ${SQL_FILE}
