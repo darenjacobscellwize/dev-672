@@ -87,6 +87,14 @@ update_sql_file() {
   done
 }
 
+last_line() {
+
+  # tail -n 1 $SQL_FILE | awk  '{gsub(/,$/,";"); print}'
+  LAST_LINE=$(tail -n 1 $SQL_FILE | sed "s/.$/;/")
+  tail -n 1 "$SQL_FILE" | wc -c | xargs -I {} truncate "$SQL_FILE" -s -{}
+  echo "${LAST_LINE}" >> $SQL_FILE
+}
+
 execute_script() {
   if [ -f "${SQL_FILE}" ]; then
     rm ${SQL_FILE}
@@ -99,3 +107,4 @@ execute_script() {
 }
 
 execute_script
+last_line
