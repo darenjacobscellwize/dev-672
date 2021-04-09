@@ -88,8 +88,7 @@ update_sql_file() {
 }
 
 last_line() {
-
-  # tail -n 1 $SQL_FILE | awk  '{gsub(/,$/,";"); print}'
+  # Lots of hoops to change a comma to a semicolon on the last line
   LAST_LINE=$(tail -n 1 $SQL_FILE | sed "s/.$/;/")
   tail -n 1 "$SQL_FILE" | wc -c | xargs -I {} truncate "$SQL_FILE" -s -{}
   echo "${LAST_LINE}" >> $SQL_FILE
