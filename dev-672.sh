@@ -103,8 +103,8 @@ execute_script() {
   process_files
   create_sql_file
   update_sql_file
+  last_line
   rm  $NOKIA_INPUT_FILE $NOKIA_OUTPUT_FILE $SAMSUNG_INPUT_FILE $SAMSUNG_OUTPUT_FILE
 }
 
 execute_script
-last_line
