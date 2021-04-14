@@ -17,14 +17,12 @@ get_data() {
 
 read_file() {
   while read f; do
-    # echo "$f"
-  sed -e 's/\(^.*_\)\(.*\)\(_.*$\)/\2/' <<< "$f"
+    sed -e 's/\(^.*_\)\(.*\)\(_.*$\)/\2/' <<< "$f"
   done < $FILE_TO_READ
 }
 
 process_files() {
-  for file in ${NOKIA_INPUT_FILE} ${SAMSUNG_INPUT_FILE}
-  do
+  for file in ${NOKIA_INPUT_FILE} ${SAMSUNG_INPUT_FILE}; do
     FILE_TO_READ=${file}
     if [ $file = ${NOKIA_INPUT_FILE} ]; then
       read_file >> ${NOKIA_OUTPUT_FILE}
@@ -70,10 +68,8 @@ INSERT INTO \`oss_info\` (\`id\`, \`description\`, \`localId\`, \`name\`, \`vend
 
 update_sql_file() {
   id_number=9
-  for file in ${NOKIA_OUTPUT_FILE} ${SAMSUNG_OUTPUT_FILE}
-  do
-    while IFS= read -r line
-    do
+  for file in ${NOKIA_OUTPUT_FILE} ${SAMSUNG_OUTPUT_FILE}; do
+    while IFS= read -r line; do
       if [ $file = ${NOKIA_OUTPUT_FILE} ]; then
         vendor="NOKIA"
         echo "($id_number,'${vendor} OSS $line','$line','$line','$vendor')," >> ${SQL_FILE}
